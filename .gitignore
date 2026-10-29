@@ -1,0 +1,5 @@
+.build/
+DerivedData/
+Resources/OfflineDoors.json
+xcuserdata/
+*.xcuserstate

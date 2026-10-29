@@ -1,0 +1,17 @@
+[
+  {
+    "peripheralID": "EA926316-23D3-AF59-4A41-183CD4F2A17B",
+    "doorID": "7630",
+    "verification": "User-supplied iPhone scan 2026-10-28T15:54:23Z: 22-byte EE05 advertisement prefix 40:06:A0:87:2C:A1 exactly matches the unique authorized backend MAC for door 7630. Name is corroborating only; no GATT/unlock result observed."
+  },
+  {
+    "peripheralID": "C41EE691-E633-2925-8B4E-D9106394F287",
+    "doorID": "17176",
+    "verification": "User-supplied iPhone scan 2026-10-28T15:56:10Z: 22-byte EE05 advertisement prefix 34:03:DE:3A:82:7F exactly matches the unique authorized backend MAC for door 17176. Name is corroborating only; no GATT/unlock result observed."
+  },
+  {
+    "peripheralID": "6E68BB59-1B69-F351-2F64-09BE6E57C7D0",
+    "doorID": "7631",
+    "verification": "User-supplied iPhone scan 2026-10-28T15:57:02Z: 22-byte EE05 advertisement prefix 40:06:A0:87:2E:94 exactly matches the unique authorized backend MAC for door 7631. Name is corroborating only; no GATT/unlock result observed."
+  }
+]

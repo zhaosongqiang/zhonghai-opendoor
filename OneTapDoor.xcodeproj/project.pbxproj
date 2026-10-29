@@ -1,0 +1,222 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E4EAA4E330E72E4133DDB7A0 /* Core/BLEInteractionLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7C34EB253888CDFFF74149 /* Core/BLEInteractionLog.swift */; };
+		0683CB068CFDCBFCAD624841 /* App/OneTapDoorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CD87F6E42C238FC9AE7FC1 /* App/OneTapDoorApp.swift */; };
+		4D307FECDBE3D9E1B7EF3AA7 /* Resources/OfflineDoors.json in Resources */ = {isa = PBXBuildFile; fileRef = 2499072FBD35157028475AA3 /* Resources/OfflineDoors.json */; };
+		4EBFDA429915C327162D62F7 /* Core/DoorIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1EA8E0F6D70D8F08E92A7E /* Core/DoorIdentity.swift */; };
+		67B72F993168A977A4B767A6 /* App/DoorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2190B00968CA2A3DE16620EB /* App/DoorController.swift */; };
+		7A880A3CACFEC26D29C55D96 /* Core/DoorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BAC1DFDC9C070FA9A88E4A /* Core/DoorProtocol.swift */; };
+		B60DACFA0B568CF5234B6446 /* Resources/VerifiedBindings.json in Resources */ = {isa = PBXBuildFile; fileRef = B6E3D54232044957C2B1AD5F /* Resources/VerifiedBindings.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4C7C34EB253888CDFFF74149 /* Core/BLEInteractionLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/BLEInteractionLog.swift; sourceTree = "<group>"; };
+		0D1EA8E0F6D70D8F08E92A7E /* Core/DoorIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/DoorIdentity.swift; sourceTree = "<group>"; };
+		2190B00968CA2A3DE16620EB /* App/DoorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/DoorController.swift; sourceTree = "<group>"; };
+		2499072FBD35157028475AA3 /* Resources/OfflineDoors.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Resources/OfflineDoors.json; sourceTree = "<group>"; };
+		24CD87F6E42C238FC9AE7FC1 /* App/OneTapDoorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/OneTapDoorApp.swift; sourceTree = "<group>"; };
+		A8792157CB4F27FB949C035F /* OneTapDoor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneTapDoor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6E3D54232044957C2B1AD5F /* Resources/VerifiedBindings.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Resources/VerifiedBindings.json; sourceTree = "<group>"; };
+		F1BAC1DFDC9C070FA9A88E4A /* Core/DoorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/DoorProtocol.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E2AA269EB967A8853A258BFA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A3E27B8CA818264D75C8D81 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A8792157CB4F27FB949C035F /* OneTapDoor.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0D6E4079E36703EBD37C0072 = {
+			isa = PBXGroup;
+			children = (
+				24CD87F6E42C238FC9AE7FC1 /* App/OneTapDoorApp.swift */,
+				2190B00968CA2A3DE16620EB /* App/DoorController.swift */,
+				F1BAC1DFDC9C070FA9A88E4A /* Core/DoorProtocol.swift */,
+				0D1EA8E0F6D70D8F08E92A7E /* Core/DoorIdentity.swift */,
+				4C7C34EB253888CDFFF74149 /* Core/BLEInteractionLog.swift */,
+				2499072FBD35157028475AA3 /* Resources/OfflineDoors.json */,
+				B6E3D54232044957C2B1AD5F /* Resources/VerifiedBindings.json */,
+				0A3E27B8CA818264D75C8D81 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		34A04005BCAF206EEC990BD9 /* OneTapDoor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA6C49DB5A7137BA75102BE3 /* Build configuration list for PBXNativeTarget "OneTapDoor" */;
+			buildPhases = (
+				878A52FC5FF6A57D50B7B870 /* Sources */,
+				E2AA269EB967A8853A258BFA /* Frameworks */,
+				41D311A605520FC7B8B9A980 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneTapDoor;
+			productName = OneTapDoor;
+			productReference = A8792157CB4F27FB949C035F /* OneTapDoor.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		244210E48437B6556980A702 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 187B327489003FCA55B00C62 /* Build configuration list for PBXProject "OneTapDoor" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = zh_CN;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				zh_CN,
+				en,
+				Base,
+			);
+			mainGroup = 0D6E4079E36703EBD37C0072;
+			productRefGroup = 0A3E27B8CA818264D75C8D81 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				34A04005BCAF206EEC990BD9 /* OneTapDoor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		41D311A605520FC7B8B9A980 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4D307FECDBE3D9E1B7EF3AA7 /* Resources/OfflineDoors.json in Resources */,
+				B60DACFA0B568CF5234B6446 /* Resources/VerifiedBindings.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		878A52FC5FF6A57D50B7B870 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0683CB068CFDCBFCAD624841 /* App/OneTapDoorApp.swift in Sources */,
+				67B72F993168A977A4B767A6 /* App/DoorController.swift in Sources */,
+				7A880A3CACFEC26D29C55D96 /* Core/DoorProtocol.swift in Sources */,
+				4EBFDA429915C327162D62F7 /* Core/DoorIdentity.swift in Sources */,
+				E4EAA4E330E72E4133DDB7A0 /* Core/BLEInteractionLog.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0B0C687DF8B6B8DC790B519C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		6C7EFF6369083C8E1F2B1994 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = C3W5V6BF57;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = local.personal.OneTapDoor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		73EBF6644258C120893E685D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DD75E2CB1C510A828AC72D96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = C3W5V6BF57;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = local.personal.OneTapDoor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		187B327489003FCA55B00C62 /* Build configuration list for PBXProject "OneTapDoor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				73EBF6644258C120893E685D /* Debug */,
+				0B0C687DF8B6B8DC790B519C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA6C49DB5A7137BA75102BE3 /* Build configuration list for PBXNativeTarget "OneTapDoor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C7EFF6369083C8E1F2B1994 /* Debug */,
+				DD75E2CB1C510A828AC72D96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 244210E48437B6556980A702 /* Project object */;
+}

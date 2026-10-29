@@ -1,0 +1,50 @@
+最新验证：2026-10-29，交互日志版本 gatt-3。
+完整 Swift 测试 24 tests，0 failures。新增真实文件即时写入、事件顺序、十六进制/字节长度、UTF-8/换行、每次独立文件、关闭后不再写入、NSError.userInfo 排除以及成功开门时也显示日志失败的覆盖。
+Debug 真机目标 BUILD SUCCEEDED（CODE_SIGNING_ALLOWED=NO）；原凭据资源与三个绑定核对一致，文件共享配置保留。保留用户的签名 Team 与 Bundle Identifier 设置。
+代码审查发现的提交事件时机及成功结果隐藏日志故障均已修复，二次复审无重要发现。
+此验证仅涉及合成数据本地日志和编译，未收集真实手机日志、未连接或操作门禁。每次点击将生成 Documents/BLELogs/*.jsonl，LastConnection.json 记录 interactionLog 相对路径与日志错误状态。
+
+以下为先前历史验证记录：
+
+最新验证：2026-10-29，GATT 写入兼容修复 gatt-2。
+用户报告原始证据：analysis/phone-door/rear-door-gatt-2026-10-29.json。FFF2=0x0a，仅支持 read+write，旧 withoutResponse 限制拒绝真实设备；回归测试先复现失败。
+修复后完整 Swift 测试套件 20 tests，0 failures；覆盖有响应写入选择、对应长度上限、ATT ACK 与协议应答两种顺序、ACK 本身不完成协议、写入失败、取消、原无响应路径。
+Debug 真机目标 BUILD SUCCEEDED（CODE_SIGNING_ALLOWED=NO）。产物原授权资源及三个绑定均校验一致。
+独立静态复审无 critical/important 发现。没有替用户连接门禁、发送开门指令或访问业务服务器。真实握手及物理开门仍待用户验证。
+
+以下为先前历史验证记录：
+
+最新验证：2026-10-29，GATT 通道不兼容诊断版本 gatt-1。
+新增逐项校验测试先因缺少实现失败；实现后全部 14 tests，0 failures。覆盖完整/短 UUID 等价、notify-only 与 indicate 的区别、重复/缺少特征、属性缺失、写入长度不足和发现回调错误。
+Debug 真机目标编译 BUILD SUCCEEDED（CODE_SIGNING_ALLOWED=NO）。包内原授权资源和三个绑定均核对一致。
+此次保留原传输要求，仅扩大 FFF0 元数据发现并提供 LastConnection.json。未测试真实 GATT；用户报错的具体根因仍等待新报告确认。没有代替用户扫描或发出门禁命令。
+
+以下为先前验证记录：
+
+最新验证：2026-10-29，三台门禁现场数据绑定更新。
+用户提供的三份广播均为 22 字节 EE05，前 6 字节分别唯一匹配既有授权 MAC，绑定 door_id 7630、17176、7631。
+新增现场对照测试：原空配置失败，写入三台绑定后通过；最终 11 tests，0 failures。
+真机 Release 目标编译 BUILD SUCCEEDED（CODE_SIGNING_ALLOWED=NO）。包内三个绑定与源码资源完全一致，原 11 条凭据资源未改变。
+本轮只更新资源、测试和说明；没有修改 BLE 协议代码，没有安装到用户 iPhone，没有发送真实门禁指令。真实握手/开门结果仍待现场验证。
+更新包点击后会尝试对附近绑定门禁开门，不再是仅扫描包。用户须使用 Xcode 重新签名、安装到采集这些 UUID 的同一 iPhone。
+
+以下为 2026-10-28 初版历史验证记录（空绑定状态已由以上更新取代）：
+
+验证日期：2026-10-28
+环境：Xcode 27.1；Swift 6.4（Swift 5 language mode）；iOS deployment target 16.0。
+
+swift test：10 tests，0 failures。
+包含原 native 报文向量、FIPS AES、CRC16、错误命令/状态、重复 open、身份未映射、无效授权、RSSI、排队应答门控、取消与结果未知提示。
+
+xcodebuild Debug / iphonesimulator：BUILD SUCCEEDED。
+xcodebuild Release / iphoneos：BUILD SUCCEEDED。
+两者 CODE_SIGNING_ALLOWED=NO。真机目标编译不等于已签名安装或实体门禁验证。
+编译仅提示 AppIntents 元数据跳过（没有使用 AppIntents）。
+
+模拟器 iPhone 18 Pro / iOS 27.0：安装及启动成功。home.png 为实际启动截图，已检查只有居中蓝色圆形开门按钮。
+未点击按钮、未扫描或连接真实 BLE、未触发物理开门。
+
+资源验证：两个构建均包含 11 条完整凭据，10 条为普通协议有效 MAC，绑定文件均为空；源码无业务网络或日志调用。
+独立代码审查：两个重要问题已修复，二次审查无剩余重要/严重发现。
+
+未完成：iOS UUID 与已授权 MAC 的可靠对应关系、实机 GATT 行为及真实开门效果。当前空绑定包只用于扫描诊断，不连接或发送门禁命令。
