@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E4EAA4E330E72E4133DDB7A0 /* Core/BLEInteractionLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7C34EB253888CDFFF74149 /* Core/BLEInteractionLog.swift */; };
 		0683CB068CFDCBFCAD624841 /* App/OneTapDoorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24CD87F6E42C238FC9AE7FC1 /* App/OneTapDoorApp.swift */; };
 		4D307FECDBE3D9E1B7EF3AA7 /* Resources/OfflineDoors.json in Resources */ = {isa = PBXBuildFile; fileRef = 2499072FBD35157028475AA3 /* Resources/OfflineDoors.json */; };
 		4EBFDA429915C327162D62F7 /* Core/DoorIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1EA8E0F6D70D8F08E92A7E /* Core/DoorIdentity.swift */; };
@@ -17,7 +16,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4C7C34EB253888CDFFF74149 /* Core/BLEInteractionLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/BLEInteractionLog.swift; sourceTree = "<group>"; };
 		0D1EA8E0F6D70D8F08E92A7E /* Core/DoorIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core/DoorIdentity.swift; sourceTree = "<group>"; };
 		2190B00968CA2A3DE16620EB /* App/DoorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App/DoorController.swift; sourceTree = "<group>"; };
 		2499072FBD35157028475AA3 /* Resources/OfflineDoors.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Resources/OfflineDoors.json; sourceTree = "<group>"; };
@@ -53,7 +51,6 @@
 				2190B00968CA2A3DE16620EB /* App/DoorController.swift */,
 				F1BAC1DFDC9C070FA9A88E4A /* Core/DoorProtocol.swift */,
 				0D1EA8E0F6D70D8F08E92A7E /* Core/DoorIdentity.swift */,
-				4C7C34EB253888CDFFF74149 /* Core/BLEInteractionLog.swift */,
 				2499072FBD35157028475AA3 /* Resources/OfflineDoors.json */,
 				B6E3D54232044957C2B1AD5F /* Resources/VerifiedBindings.json */,
 				0A3E27B8CA818264D75C8D81 /* Products */,
@@ -128,7 +125,6 @@
 				67B72F993168A977A4B767A6 /* App/DoorController.swift in Sources */,
 				7A880A3CACFEC26D29C55D96 /* Core/DoorProtocol.swift in Sources */,
 				4EBFDA429915C327162D62F7 /* Core/DoorIdentity.swift in Sources */,
-				E4EAA4E330E72E4133DDB7A0 /* Core/BLEInteractionLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

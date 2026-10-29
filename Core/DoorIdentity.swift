@@ -38,18 +38,43 @@ public struct DoorAdvertisement {
 public struct SignalRanker {
     private struct Sample { let rssi: Int; let time: TimeInterval }
     private var samples: [UUID: [Sample]] = [:]
+    private var observedIDs: Set<UUID> = []
     public init() {}
     public mutating func add(_ id: UUID, rssi: Int, at time: TimeInterval) {
+        guard time.isFinite else { return }
+        observedIDs.insert(id)
         guard (-126 ... -1).contains(rssi) else { return }
         var values = (samples[id] ?? []).filter { time - $0.time <= 3 }
+        // CoreBluetooth may deliver several callbacks for the same radio advertisement.
+        // Keep them in the wire log, but do not count a burst as independent RSSI evidence.
+        if let last = values.last, time - last.time < 0.08 { return }
         values.append(Sample(rssi: rssi, time: time)); samples[id] = Array(values.suffix(30))
     }
     public func strongest(at time: TimeInterval) -> UUID? {
-        samples.compactMap { id, samples -> (UUID, Int)? in
-            let values = samples.filter { time - $0.time <= 3 && time >= $0.time }.map(\.rssi).sorted()
+        ranked(at: time).first?.id
+    }
+    public func canFinishEarly(at time: TimeInterval, scanStartedAt: TimeInterval) -> Bool {
+        guard time.isFinite, scanStartedAt.isFinite, time - scanStartedAt >= 1, time - scanStartedAt < 3 else { return false }
+        let candidates = ranked(at: time)
+        guard candidates.count == observedIDs.count else { return false }
+        guard let first = candidates.first, first.median >= -80 else { return false }
+        // All observed candidates must have enough recent evidence. A newly arrived or
+        // temporarily missing competitor must not be silently discarded by the fast path.
+        guard candidates.allSatisfy({ candidate in
+            let values = candidate.values
+            guard values.count >= 3, let oldest = values.first, let latest = values.last else { return false }
+            return oldest.time >= scanStartedAt && time - oldest.time >= 0.6 &&
+                   latest.time - oldest.time >= 0.4 && time - latest.time <= 0.35
+        }) else { return false }
+        return candidates.count == 1 || first.median - candidates[1].median >= 8
+    }
+    private func ranked(at time: TimeInterval) -> [(id: UUID, median: Int, values: [Sample])] {
+        samples.compactMap { id, samples -> (id: UUID, median: Int, values: [Sample])? in
+            let values = samples.filter { time - $0.time <= 3 && time >= $0.time }.sorted { $0.time < $1.time }
             guard !values.isEmpty else { return nil }
-            return (id, values[values.count / 2])
-        }.sorted { $0.1 == $1.1 ? $0.0.uuidString < $1.0.uuidString : $0.1 > $1.1 }.first?.0
+            let strengths = values.map(\.rssi).sorted()
+            return (id, strengths[strengths.count / 2], values)
+        }.sorted { $0.median == $1.median ? $0.id.uuidString < $1.id.uuidString : $0.median > $1.median }
     }
 }
 

@@ -1,3 +1,22 @@
+最新验证：2026-10-29，移除全部 App 文件日志。
+完整核心测试 24 tests，0 failures（原 28 项中移除四项只服务于已删除日志功能的测试）。保留协议、ACK、身份绑定、RSSI 自适应扫描等功能测试。
+Debug 真机目标编译 BUILD SUCCEEDED（CODE_SIGNING_ALLOWED=NO）。独立静态复审无重要发现。
+App/Core 源码审计：没有日志器、FileManager/FileHandle 写入、Data.write、控制台报文输出或诊断保存调用；仅读取内置资源。
+构建主程序及 debug dylib 未发现 BLEInteractionLog、BLELogs、LastConnection.json、LastScan.json 字符串；授权与绑定资源和源文件一致。
+保留 UI 成功/失败及结果未知提示。没有运行真实门禁，没有删除用户历史日志。系统自身产生的缓存/诊断不在本应用日志代码控制范围内。
+
+以下为先前历史验证记录：
+
+最新验证：2026-10-29，自适应扫描 gatt-4。
+用户确认实际开门成功，四份现场 gatt-3 日志覆盖三个已绑定门，均出现 open_response_validated/confirmedOpen。
+实测旧版总耗时 4167–4327ms，扫描 3145–3163ms，建立连接 141–262ms。
+新生产 SignalRanker 回放同一批授权广播，扫描于 1001/1147/1085/1047ms 结束且选择相同设备。按后续耗时不变估算新总耗时 2065/2174/2089/2215ms；该估算尚未经过新版真机测量。
+完整测试 28 tests，0 failures。包括单门、多门接近、晚到强门、重复回调、弱信号、陈旧样本和已观察但暂无有效 RSSI 的候选。后者由复审发现后先复现测试失败，再修复。
+Debug 真机目标编译 BUILD SUCCEEDED（CODE_SIGNING_ALLOWED=NO），凭据资源与三个绑定校验一致。独立二次复审无重要发现。
+未替用户执行实体开门。需覆盖安装后在相同位置测量，比较 gatt-4 的 scanDurationMilliseconds/scanStopReason 及交互日志阶段耗时。
+
+以下为先前历史验证记录：
+
 最新验证：2026-10-29，交互日志版本 gatt-3。
 完整 Swift 测试 24 tests，0 failures。新增真实文件即时写入、事件顺序、十六进制/字节长度、UTF-8/换行、每次独立文件、关闭后不再写入、NSError.userInfo 排除以及成功开门时也显示日志失败的覆盖。
 Debug 真机目标 BUILD SUCCEEDED（CODE_SIGNING_ALLOWED=NO）；原凭据资源与三个绑定核对一致，文件共享配置保留。保留用户的签名 Team 与 Bundle Identifier 设置。

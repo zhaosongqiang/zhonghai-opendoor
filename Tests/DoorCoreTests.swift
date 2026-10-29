@@ -3,62 +3,47 @@ import CoreBluetooth
 @testable import DoorCore
 
 final class DoorCoreTests: XCTestCase {
-    func testSuccessfulDoorResultStillShowsLogAndSummaryStorageFailures() {
-        let message = InteractionLogNotice.message(result: "门禁已确认开门", reportSaved: false, hasLog: true, logFailure: "日志同步失败")
-        XCTAssertTrue(message.hasPrefix("门禁已确认开门"))
-        XCTAssertTrue(message.contains("诊断文件保存失败"))
-        XCTAssertTrue(message.contains("交互日志未完整保存"))
-        XCTAssertTrue(message.contains("日志同步失败"))
-        let absent = InteractionLogNotice.message(result: "门禁已确认开门", reportSaved: true, hasLog: false, logFailure: nil)
-        XCTAssertTrue(absent.contains("未能创建交互日志"))
-        let complete = InteractionLogNotice.message(result: "门禁已确认开门", reportSaved: true, hasLog: true, logFailure: nil)
-        XCTAssertTrue(complete.contains("BLELogs"))
-        XCTAssertFalse(complete.contains("失败"))
+    func testStableSingleDoorCanFinishAfterOneSecondButNotImmediately() {
+        let id = UUID()
+        var rank = SignalRanker()
+        for t in [0.1, 0.3, 0.6, 0.8, 1.05] { rank.add(id, rssi: -65, at: t) }
+        XCTAssertFalse(rank.canFinishEarly(at: 0.9, scanStartedAt: 0))
+        XCTAssertTrue(rank.canFinishEarly(at: 1.05, scanStartedAt: 0))
+        XCTAssertEqual(rank.strongest(at: 1.05), id)
     }
-    func testInteractionLogPersistsOrderedRawPacketsBeforeClose() throws {
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let log = try BLEInteractionLog(directory: directory)
-        XCTAssertTrue(log.record(event: "write_submitted", stage: "opening", direction: "tx", characteristic: "FFF2", bytes: [0x00, 0x0a, 0xff], fields: ["writeType": "withResponse"]))
-        XCTAssertTrue(log.record(event: "value_received", stage: "opening", direction: "rx", characteristic: "FFF3", bytes: [0x01, 0x02], fields: ["doorName": "后门\n测试"]))
-        let lines = try String(contentsOf: log.fileURL, encoding: .utf8).split(separator: "\n")
-        XCTAssertEqual(lines.count, 2)
-        let first = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(lines[0].utf8)) as? [String: Any])
-        let second = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(lines[1].utf8)) as? [String: Any])
-        XCTAssertEqual(first["sequence"] as? Int, 1)
-        XCTAssertEqual(second["sequence"] as? Int, 2)
-        XCTAssertEqual(first["hex"] as? String, "000aff")
-        XCTAssertEqual(first["byteCount"] as? Int, 3)
-        XCTAssertEqual(first["characteristic"] as? String, "FFF2")
-        XCTAssertNotNil(first["timestamp"] as? String)
-        XCTAssertNotNil(first["elapsedMilliseconds"] as? Int)
-        XCTAssertEqual((second["fields"] as? [String: String])?["doorName"], "后门\n测试")
-        log.close()
+    func testBurstDuplicatesCannotSupplyIndependentRSSISamples() {
+        var rank = SignalRanker(); let id = UUID()
+        for t in [0.5, 0.501, 0.502, 0.503, 1.01] { rank.add(id, rssi: -60, at: t) }
+        XCTAssertFalse(rank.canFinishEarly(at: 1.01, scanStartedAt: 0))
     }
-    func testInteractionLogsDoNotOverwritePreviousAttemptAndIgnoreWritesAfterClose() throws {
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let first = try BLEInteractionLog(directory: directory)
-        XCTAssertTrue(first.record(event: "cancelled", stage: "idle"))
-        first.close()
-        XCTAssertFalse(first.record(event: "late_callback", stage: "idle"))
-        let second = try BLEInteractionLog(directory: directory)
-        defer { second.close() }
-        XCTAssertNotEqual(first.fileURL, second.fileURL)
-        XCTAssertEqual(try String(contentsOf: first.fileURL, encoding: .utf8).split(separator: "\n").count, 1)
+    func testCloseSignalsAndLateStrongerDoorKeepScanningUntilEnoughEvidence() {
+        var rank = SignalRanker(); let first = UUID(), later = UUID()
+        for t in [0.1, 0.4, 0.7, 1.0] { rank.add(first, rssi: -65, at: t) }
+        rank.add(later, rssi: -50, at: 0.95)
+        XCTAssertFalse(rank.canFinishEarly(at: 1.0, scanStartedAt: 0))
+        for t in [1.15, 1.4, 1.6] { rank.add(first, rssi: -65, at: t); rank.add(later, rssi: -50, at: t) }
+        XCTAssertTrue(rank.canFinishEarly(at: 1.6, scanStartedAt: 0))
+        XCTAssertEqual(rank.strongest(at: 1.6), later)
+        var close = SignalRanker()
+        for t in [0.1, 0.4, 0.7, 1.0] { close.add(first, rssi: -65, at: t); close.add(later, rssi: -62, at: t) }
+        XCTAssertFalse(close.canFinishEarly(at: 1.0, scanStartedAt: 0))
     }
-    func testInteractionLogSerializesErrorCodeWithoutErrorUserInfo() throws {
-        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        defer { try? FileManager.default.removeItem(at: directory) }
-        let log = try BLEInteractionLog(directory: directory)
-        defer { log.close() }
-        let error = NSError(domain: "CBATTErrorDomain", code: 3, userInfo: ["secret_key": "do-not-log-this"])
-        XCTAssertTrue(log.record(event: "write_ack", stage: "idle", error: error))
-        let text = try String(contentsOf: log.fileURL, encoding: .utf8)
-        let row = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(text.utf8)) as? [String: Any])
-        XCTAssertEqual(row["errorDomain"] as? String, "CBATTErrorDomain")
-        XCTAssertEqual(row["errorCode"] as? Int, 3)
-        XCTAssertFalse(text.contains("do-not-log-this"))
+    func testWeakStaleInvalidAndVanishedCompetitorsCannotTriggerEarlySelection() {
+        let id = UUID(), other = UUID()
+        var weak = SignalRanker()
+        for t in [0.1, 0.4, 0.8, 1.0] { weak.add(id, rssi: -90, at: t) }
+        XCTAssertFalse(weak.canFinishEarly(at: 1.0, scanStartedAt: 0))
+        var stale = SignalRanker()
+        for t in [0.1, 0.3, 0.6] { stale.add(id, rssi: -60, at: t) }
+        XCTAssertFalse(stale.canFinishEarly(at: 1.1, scanStartedAt: 0))
+        var mixed = SignalRanker()
+        for t in [0.1, 0.4, 0.8, 1.0] { mixed.add(id, rssi: -60, at: t); mixed.add(other, rssi: 127, at: t) }
+        XCTAssertFalse(mixed.canFinishEarly(at: 1.0, scanStartedAt: 0))
+        mixed.add(other, rssi: -40, at: 0.2)
+        XCTAssertFalse(mixed.canFinishEarly(at: 1.0, scanStartedAt: 0))
+        for t in [0.4, 0.8, 1.0] { mixed.add(other, rssi: -40, at: t) }
+        XCTAssertTrue(mixed.canFinishEarly(at: 1.0, scanStartedAt: 0))
+        XCTAssertEqual(mixed.strongest(at: 1.0), other)
     }
     func testWriteModeUsesSupportedPropertyAndItsOwnLengthLimit() {
         XCTAssertEqual(GATTCheck.writeType(properties: 10, maxWithout: 20, maxWith: 512), .withResponse)
